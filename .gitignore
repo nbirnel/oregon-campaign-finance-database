@@ -1,0 +1,4 @@
+*.db
+*.db-journal
+import-filings*.sql
+import-transactions*.sql

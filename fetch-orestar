@@ -1,0 +1,46 @@
+#!/bin/sh
+
+usage() {
+    printf 'USAGE: %s FILE_TO_READ DOWNLOADED_FILE DESTINATION_DIR\n' "$0" 1>&2
+    exit 1
+}
+
+test "$#" -eq 3 || usage
+
+file="$1"
+#download=~/Downloads/XcelCNESearch.xls
+download="$2"
+dest="$3"
+
+total="$(wc -l < "$file")"
+remaining="$total"
+
+while :; do
+    printf '%d remaining of %d\n' "$remaining" "$total"
+    next="$(sed 1q "$file")"
+
+    printf 'fetch %s\n' "$next"
+    printf '%s' "$next" | xclip -i
+
+    printf 'hit enter when ready\n'
+    read -r _nonce
+
+    if [ -e "$download" ]; then
+        mv -v "$download" "$dest"/"$next".xls
+    else
+        touch "$dest"/"$next".xls
+        printf 'creating empty file %s/%s.xls\n' "$dest" "$next"
+    fi
+    
+
+    sed -i 1d "$file"
+    remaining="$(wc -l < "$file")"
+    test "$remaining" -eq 0 && break
+done
+
+(
+    printf 'converting all .xls files to .csv in %s\n' "$dest"
+    cd "$dest" 
+    loffice --headless --convert-to csv *.xls
+    rm -fv *.xls
+)

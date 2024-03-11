@@ -1,0 +1,20 @@
+digraph erd {
+	
+    committee [shape=box];
+    statement [shape=box];
+    transaction [shape=box];
+    city [shape=box];
+    spelling [shape=box];
+    address [shape=box];
+
+	committee -> statement [label="submits", fontsize="9pt", dir=both, arrowtail=nonetee, arrowhead=crow];
+	statement -> address [label="candidate", fontsize="9pt", dir=both, arrowtail=crowodot, arrowhead=teeodot];
+	statement -> address [label="treasurer", fontsize="9pt", dir=both, arrowtail=crowodot, arrowhead=teeodot];
+	committee -> transaction [label="makes", fontsize="9pt", dir=both, arrowtail=nonetee, arrowhead=crowodot];
+	transaction -> committee [label="involves", fontsize="9pt", dir=both, arrowtail=crowodot, arrowhead=teeodot];
+    address -> city[label="in", fontsize="9pt", dir=both, arrowtail=crowodot, arrowhead=teeodot];
+    city -> spelling [label="has", fontsize="9pt", dir=both, arrowtail=nonetee, arrowhead=crow];
+
+    // {rank = same; student; "comment";}
+    // {rank = max; problem;}
+}
